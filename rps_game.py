@@ -81,7 +81,7 @@ class RpsGame(object):
         """ Could be multiple winners (a tie) or zero winners (self destruction) """
         choices = {}
         for p in players:
-            choices[p] = p.pick_weapon(self.allowed_weapons[:])
+            choices[p] = p.pick_weapon(self.allowed_weapons[:]) # send a copy incase there's an evil player that mutates the list.
 
         left_standing = set(players)
         weapons_played = choices.values()
@@ -89,6 +89,7 @@ class RpsGame(object):
             for other_weapon in weapons_played:
                 if other_weapon.wins_against(weapon_chosen):
                     left_standing.discard(p)
+                    break # no need to check more, player is out.
 
         return list(left_standing), choices
 
